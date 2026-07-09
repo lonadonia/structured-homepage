@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+/* ============================================================
+   STRUCTURED™ — Design tokens
+   Source: structured_design_tokens.json (Concept C — Light Core, Dark Shell)
+   Canonical brand hexes (do not drift):
+   #0B0F17 · #4F46E5 · #2563EB · #E5E7EB · #F8FAFC
+   ============================================================ */
+
+@theme inline {
+  /* ---- Ink ramp (dark-section surfaces) ---- */
+  --color-ink-950: #070a10;
+  --color-ink-900: #0b0f17;
+  --color-ink-800: #111726;
+  --color-ink-700: #1a2233;
+  --color-ink-600: #242f45;
+
+  /* ---- Canonical light neutrals ---- */
+  --color-paper: #f8fafc;
+  --color-mist: #e5e7eb;
+
+  /* ---- Neutral ramp (light-section grays) ---- */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f4f8;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d3d9e1;
+  --color-gray-400: #9aa3b2;
+  --color-gray-500: #6b7484;
+  --color-gray-600: #4a5262;
+  --color-gray-700: #333a48;
+
+  /* ---- Accent ramps: indigo = intelligence, blue = interactive ---- */
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
+
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+
+  /* ---- Data deltas (numeric only, never decorative) ---- */
+  --color-delta-up: #059669;
+  --color-delta-up-dark: #34d399;
+  --color-delta-down: #dc2626;
+
+  /* ---- Typography ---- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Consolas,
+    monospace;
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* ---- Shadows: content sits on hairlines, not shadows ---- */
+  --shadow-nav: 0 1px 2px rgba(11, 15, 23, 0.06);
+  --shadow-artifact: 0 12px 32px -12px rgba(11, 15, 23, 0.14);
+
+  /* ---- Breakpoints (align xxl with token file) ---- */
+  --breakpoint-2xl: 1440px;
+}
+
+/* ---- Page-level variables ---- */
+:root {
+  --container-pad: 20px;
+  --nav-h: 64px;
+}
+@media (min-width: 768px) {
+  :root {
+    --container-pad: 40px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --container-pad: 64px;
+    --nav-h: 72px;
+  }
+}
+
+/* ---- Base ---- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 24px);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+::selection {
+  background: rgb(37 99 235 / 0.18);
+}
+
+:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 0.35);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Containers — 12-col / 1200px content, 1320px artifact
+   ============================================================ */
+
+@utility container-content {
+  width: 100%;
+  max-width: calc(1200px + 2 * var(--container-pad));
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+@utility container-artifact {
+  width: 100%;
+  max-width: calc(1320px + 2 * var(--container-pad));
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+/* ============================================================
+   Typography scale (tokens: typography.scale)
+   Fluid via clamp() between 360 and 1280.
+   ============================================================ */
+
+@utility text-display-xl {
+  font-size: clamp(2.75rem, 1.5rem + 4.5vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+@utility text-display-l {
+  font-size: clamp(2.375rem, 1.6rem + 3vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+@utility text-h2 {
+  font-size: clamp(1.9375rem, 1.55rem + 1.6vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+@utility text-h3 {
+  font-size: clamp(1.5rem, 1.36rem + 0.45vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+@utility text-h4 {
+  font-size: clamp(1.1875rem, 1.13rem + 0.22vw, 1.3125rem);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+}
+
+@utility text-body-l {
+  font-size: clamp(1.125rem, 1.06rem + 0.22vw, 1.25rem);
+  line-height: 1.6;
+}
+
+@utility text-body {
+  font-size: clamp(1rem, 0.98rem + 0.11vw, 1.0625rem);
+  line-height: 1.65;
+}
+
+@utility text-body-s {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+@utility text-caption {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* The instrument voice: mono indices, overlines, data labels */
+@utility text-overline {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+@utility text-overline-s {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Instrument readouts — tabular numerals always */
+@utility text-data-xl {
+  font-size: clamp(2.5rem, 2.14rem + 1.25vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility text-data-m {
+  font-size: 2rem;
+  line-height: 1.1;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Structural surfaces
+   ============================================================ */
+
+/* 24px dot grid — dark sections only, behind diagrams */
+@utility bg-dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgb(248 250 252 / 0.1) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* The ONLY permitted gradient: indigo glow inside dark diagrams, <=25% */
+@utility bg-glow-indigo {
+  background-image: radial-gradient(
+    closest-side,
+    rgb(79 70 229 / 0.25),
+    transparent
+  );
+}
+
+/* ============================================================
+   Motion — confirms, never performs
+   ============================================================ */
+
+/* Scroll reveal: opacity + 12px translate, 600ms, once.
+   Hidden state is scoped to html.js so content is never lost without JS. */
+.reveal {
+  transition:
+    opacity 600ms cubic-bezier(0.2, 0, 0, 1),
+    transform 600ms cubic-bezier(0.2, 0, 0, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero lattice: single slow drift, opacity-only, >=20s */
+@keyframes lattice-drift {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.lattice-drift {
+  animation: lattice-drift 24s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal {
+    transform: none;
+  }
+  .lattice-drift {
+    animation: none;
+  }
+  *,
+  ::before,
+  ::after {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
