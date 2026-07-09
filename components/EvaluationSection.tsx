@@ -6,7 +6,7 @@ const metrics = [
   {
     label: "Metric 01",
     title: "Framework Score",
-    body: "One comparable measure of how clearly information is structured — trackable over time and defensible in review.",
+    body: "One comparable measure of how clearly information is structured - trackable over time and defensible in review.",
   },
   {
     label: "Metric 02",
@@ -20,15 +20,17 @@ const metrics = [
   },
 ];
 
-/**
- * 03 — Evaluation. The canonical product claim, then the dashboard presented
- * as a precision instrument on the light ground. On mobile the artifact
- * becomes a full-bleed, pannable detail — never a shrunken screenshot.
- */
 export default function EvaluationSection() {
   return (
-    <section id="evaluation" className="border-t border-mist bg-paper py-16 lg:py-32">
-      <div className="container-content">
+    <section
+      id="evaluation"
+      className="relative overflow-hidden border-t border-mist bg-paper py-20 lg:py-36"
+    >
+      <div
+        aria-hidden="true"
+        className="bg-coordinate-light absolute inset-0 opacity-60 [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_70%,transparent)]"
+      />
+      <div className="container-content relative">
         <SectionHeading
           index="03"
           label="Evaluation"
@@ -37,25 +39,31 @@ export default function EvaluationSection() {
         />
       </div>
 
-      <div className="container-artifact mt-12 lg:mt-16">
+      <div className="container-artifact relative mt-12 lg:mt-20">
         <Reveal delay={120}>
-          <div className="-mx-5 overflow-x-auto px-5 pb-2 md:mx-0 md:overflow-visible md:px-0 md:pb-0">
-            <DashboardArtifact className="min-w-[640px] md:min-w-0" />
+          <div className="border-y border-gray-300 py-5 lg:py-8">
+            <div className="-mx-5 overflow-x-auto px-5 pb-2 md:mx-0 md:overflow-visible md:px-0 md:pb-0">
+              <DashboardArtifact className="min-w-[640px] md:min-w-0" />
+            </div>
           </div>
         </Reveal>
       </div>
 
-      <div className="container-content mt-12 lg:mt-16">
-        <div className="grid gap-8 md:grid-cols-3 md:gap-6">
+      <div className="container-content relative mt-12 lg:mt-16">
+        <div className="grid border-y border-gray-300 md:grid-cols-3">
           {metrics.map((m, i) => (
-            <Reveal key={m.title} delay={i * 80}>
-              <div className="border-t border-gray-300 pt-6">
-                <p className="text-overline-s text-gray-500">{m.label}</p>
-                <h3 className="text-h4 mt-3 text-ink-900">{m.title}</h3>
-                <p className="text-body-s mt-3 max-w-[44ch] text-gray-600">
-                  {m.body}
-                </p>
-              </div>
+            <Reveal
+              key={m.title}
+              delay={i * 80}
+              className={`py-7 md:px-7 ${
+                i > 0 ? "border-t border-gray-300 md:border-t-0 md:border-l" : ""
+              } ${i === 0 ? "md:pl-0" : ""} ${i === metrics.length - 1 ? "md:pr-0" : ""}`}
+            >
+              <p className="text-overline-s text-gray-500">{m.label}</p>
+              <h3 className="text-h4 mt-4 text-ink-900">{m.title}</h3>
+              <p className="text-body-s mt-4 max-w-[44ch] text-gray-600">
+                {m.body}
+              </p>
             </Reveal>
           ))}
         </div>

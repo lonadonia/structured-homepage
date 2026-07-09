@@ -1,43 +1,37 @@
-import { colors } from "@/lib/design-tokens";
+import Image from "next/image";
 
-/**
- * The existing Structured™ lockup, recreated from the official moodboard —
- * an outlined isometric cube glyph followed by the letterspaced uppercase
- * wordmark. This is brand canon: do not restyle or replace.
- */
+const logoAssets = {
+  light: {
+    logo: "/brand/logo.png",
+    icon: "/brand/icon.png",
+  },
+  dark: {
+    logo: "/brand/white-logo.png",
+    icon: "/brand/white-icon.png",
+  },
+} as const;
 
 export function LogoGlyph({
   size = 24,
-  stroke = colors.indigo[500],
   className = "",
+  tone = "dark",
 }: {
   size?: number;
   stroke?: string;
   className?: string;
+  tone?: "dark" | "light";
 }) {
   return (
-    <svg
+    <Image
+      src={logoAssets[tone].icon}
       width={size}
       height={size}
-      viewBox="0 0 24 24"
-      fill="none"
+      alt=""
       aria-hidden="true"
-      className={className}
-    >
-      <path
-        d="M12 2.2 20.8 7.1v9.8L12 21.8 3.2 16.9V7.1L12 2.2Z"
-        stroke={stroke}
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M12 21.8V12m0 0 8.8-4.9M12 12 3.2 7.1"
-        stroke={stroke}
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-    </svg>
+      className={`shrink-0 object-contain ${className}`}
+      style={{ width: size, height: size }}
+      priority={false}
+    />
   );
 }
 
@@ -45,29 +39,23 @@ export default function Logo({
   tone = "dark",
   className = "",
 }: {
-  /** dark = wordmark in paper (on ink ground); light = wordmark in ink. */
   tone?: "dark" | "light";
   className?: string;
 }) {
   return (
     <a
       href="#top"
-      aria-label="Structured — home"
-      className={`inline-flex items-center gap-3 ${className}`}
+      aria-label="Structured - home"
+      className={`inline-flex items-center ${className}`}
     >
-      <LogoGlyph
-        stroke={tone === "dark" ? colors.indigo[500] : colors.indigo[600]}
+      <Image
+        src={logoAssets[tone].logo}
+        width={tone === "dark" ? 184 : 172}
+        height={50}
+        alt="Structured"
+        className="h-8 w-auto object-contain lg:h-9"
+        priority
       />
-      <span
-        className={`text-[15px] font-semibold uppercase tracking-[0.3em] ${
-          tone === "dark" ? "text-paper" : "text-ink-900"
-        }`}
-      >
-        Structured
-        <span className="ml-1 align-super text-[9px] font-medium tracking-normal">
-          ™
-        </span>
-      </span>
     </a>
   );
 }

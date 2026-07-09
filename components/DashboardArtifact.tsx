@@ -1,17 +1,6 @@
 import { LogoGlyph } from "@/components/Logo";
 import { colors } from "@/lib/design-tokens";
 
-/**
- * The product surface from the moodboard — Overview, KPI readouts, Framework
- * Score Over Time, Top Insight, Recent Evaluations — rebuilt as live
- * HTML/CSS at readable scale and framed like a technical instrument: one
- * hairline border, one shadow, 16px radius. Never tilted, never floating in
- * dark space, never overlaid with color.
- *
- * It is an artifact, not an app: pointer events are disabled and the whole
- * frame is exposed to assistive tech as a single labelled image.
- */
-
 const navItems = [
   { label: "Overview", active: true },
   { label: "Framework" },
@@ -30,7 +19,7 @@ const kpis = [
 
 const evaluations = [
   { entity: "G-SEO Framework Overview", type: "Framework", score: "87", date: "Jun 3" },
-  { entity: "Entity Graph — Products", type: "Evaluation", score: "92", date: "Jun 2" },
+  { entity: "Entity Graph - Products", type: "Evaluation", score: "92", date: "Jun 2" },
   { entity: "Documentation Hierarchy", type: "Evaluation", score: "78", date: "May 29" },
 ];
 
@@ -73,7 +62,7 @@ function ScoreChart() {
         points={points}
         fill="none"
         stroke={colors.data.seriesPrimary}
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         strokeLinejoin="round"
       />
       <circle cx={x(last)} cy={y(scores[last])} r="3" fill={colors.data.seriesPrimary} />
@@ -96,7 +85,6 @@ function ScoreChart() {
           textAnchor="middle"
           fontSize="9"
           fontFamily="var(--font-plex-mono), monospace"
-          letterSpacing="0.04em"
           fill={colors.gray[400]}
         >
           {l.toUpperCase()}
@@ -116,6 +104,7 @@ function NavIcon({ i, active }: { i: number; active?: boolean }) {
     <path key="4" d="M3 2h8v10H3zM5.5 5h3M5.5 7.5h3" />,
     <circle key="5" cx="7" cy="7" r="3.5" />,
   ];
+
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
       <g stroke={stroke} strokeWidth="1.25" strokeLinejoin="round" strokeLinecap="round">
@@ -130,22 +119,23 @@ export default function DashboardArtifact({ className = "" }: { className?: stri
     <div
       role="img"
       aria-label="The Structured dashboard: evaluation counts, framework score of 86 out of 100, entities analyzed, integrity index of 92 out of 100, a rising framework-score chart, a top insight, and a table of recent evaluations."
-      className={`pointer-events-none flex select-none overflow-hidden rounded-2xl border border-mist bg-white shadow-artifact ${className}`}
+      className={`pointer-events-none flex select-none overflow-hidden rounded-lg border border-gray-300 bg-white shadow-[0_30px_90px_-58px_rgb(11_15_23_/_0.55),inset_0_1px_0_rgb(255_255_255_/_0.94)] ${className}`}
     >
-      {/* Sidebar */}
-      <div className="hidden w-52 shrink-0 flex-col border-r border-gray-100 md:flex">
-        <div className="flex items-center gap-2 px-5 pt-5 pb-6">
-          <LogoGlyph size={18} stroke={colors.brand.indigo} />
-          <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-ink-900">
+      <div className="hidden w-[216px] shrink-0 flex-col border-r border-white/10 bg-ink-950 text-paper md:flex">
+        <div className="flex items-center gap-2 px-5 pt-5 pb-7">
+          <LogoGlyph size={18} stroke={colors.indigo[500]} />
+          <span className="text-[10px] font-semibold uppercase text-paper">
             Structured
           </span>
         </div>
-        <nav className="flex flex-col gap-0.5 px-3" aria-hidden="true">
+        <nav className="flex flex-col gap-1 px-3" aria-hidden="true">
           {navItems.map((item, i) => (
             <span
               key={item.label}
               className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-[12px] font-medium ${
-                item.active ? "bg-blue-600 text-white" : "text-gray-500"
+                item.active
+                  ? "border border-white/10 bg-blue-600 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_0.18)]"
+                  : "text-gray-400"
               }`}
             >
               <NavIcon i={i} active={item.active} />
@@ -153,45 +143,41 @@ export default function DashboardArtifact({ className = "" }: { className?: stri
             </span>
           ))}
         </nav>
-        <p className="text-overline-s mt-auto px-6 pb-5 text-gray-400">
-          Framework v2.4
-        </p>
+        <div className="mt-auto border-t border-white/10 px-5 py-5">
+          <p className="text-overline-s text-gray-500">Framework v2.4</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-gray-400">
+            Structural intelligence layer
+          </p>
+        </div>
       </div>
 
-      {/* Main */}
-      <div className="min-w-0 flex-1">
-        {/* Topbar */}
-        <div className="flex items-center justify-between border-b border-gray-100 px-5 py-3.5">
+      <div className="min-w-0 flex-1 bg-gray-50">
+        <div className="flex items-center justify-between border-b border-gray-200 bg-white px-5 py-4">
           <div>
-            <p className="text-[13px] font-semibold text-ink-900">Overview</p>
+            <p className="text-[14px] font-semibold text-ink-900">Overview</p>
             <p className="text-[11px] text-gray-500">
-              Welcome back. Here’s what’s happening.
+              Welcome back. Here is what is happening.
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="relative h-4 w-4">
-              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path
-                  d="M8 2a4 4 0 0 0-4 4v2.5L3 11h10l-1-2.5V6a4 4 0 0 0-4-4Zm-1.5 10a1.5 1.5 0 0 0 3 0"
-                  stroke={colors.gray[400]}
-                  strokeWidth="1.25"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <span className="rounded-sm border border-gray-200 px-2.5 py-1 text-[10px] font-medium text-gray-500">
+              System stable
             </span>
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ink-900 text-[10px] font-semibold text-white">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-ink-900 text-[10px] font-semibold text-white">
               S
             </span>
           </div>
         </div>
 
-        <div className="space-y-3 bg-gray-50 p-4 lg:p-5">
-          {/* KPI row */}
+        <div className="space-y-3 p-4 lg:p-5">
           <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
             {kpis.map((k) => (
-              <div key={k.label} className="rounded-lg border border-gray-100 bg-white p-3.5">
+              <div
+                key={k.label}
+                className="rounded-md border border-gray-200 bg-white p-3.5 shadow-[inset_0_1px_0_rgb(255_255_255_/_0.86)]"
+              >
                 <p className="text-[11px] font-medium text-gray-500">{k.label}</p>
-                <p className="mt-1.5 text-[22px] font-semibold tabular-nums text-ink-900">
+                <p className="mt-1.5 text-[23px] font-semibold tabular-nums text-ink-900">
                   {k.value}
                   {k.unit && (
                     <span className="text-[13px] font-medium text-gray-400">
@@ -207,39 +193,37 @@ export default function DashboardArtifact({ className = "" }: { className?: stri
             ))}
           </div>
 
-          {/* Chart + insight */}
           <div className="grid gap-3 xl:grid-cols-3">
-            <div className="rounded-lg border border-gray-100 bg-white p-4 xl:col-span-2">
-              <div className="flex items-center justify-between">
+            <div className="rounded-md border border-gray-200 bg-white p-4 xl:col-span-2">
+              <div className="flex items-center justify-between gap-4">
                 <p className="text-[13px] font-semibold text-ink-900">
                   Framework Score Over Time
                 </p>
                 <span className="rounded-sm border border-gray-200 px-2 py-1 text-[10px] font-medium text-gray-500">
-                  Last 30 days ▾
+                  Last 30 days
                 </span>
               </div>
               <ScoreChart />
             </div>
-            <div className="flex flex-col rounded-lg border border-gray-100 bg-white p-4">
+            <div className="flex flex-col rounded-md border border-gray-200 bg-white p-4">
               <p className="text-overline-s text-gray-500">Top insight</p>
               <p className="mt-3 text-[13px] leading-relaxed text-gray-600">
                 Semantic clarity and structural consistency are improving
                 across your content.
               </p>
               <p className="mt-auto pt-4 text-[12px] font-medium text-blue-600">
-                View insight →
+                View insight -&gt;
               </p>
             </div>
           </div>
 
-          {/* Recent evaluations */}
-          <div className="rounded-lg border border-gray-100 bg-white p-4">
+          <div className="rounded-md border border-gray-200 bg-white p-4">
             <div className="flex items-center justify-between pb-3">
               <p className="text-[13px] font-semibold text-ink-900">
                 Recent Evaluations
               </p>
               <span className="text-[12px] font-medium text-blue-600">
-                View all →
+                View all -&gt;
               </span>
             </div>
             <div className="grid grid-cols-[1fr_auto_auto] gap-x-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_auto_auto]">

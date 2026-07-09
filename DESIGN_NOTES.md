@@ -160,3 +160,11 @@ language in which **every element — hairline, index, readout, lattice — is
 evidence that structure produces clarity.** Nothing on the page is dated to
 2026: flat color, geometric construction, one typeface, restrained motion.
 It should still look correct in 2030.
+
+## 9. Brand asset update
+
+The live homepage now uses the supplied PNG identity assets in `public/brand/`:
+`logo.png`, `white-logo.png`, `icon.png`, and `white-icon.png`. Header,
+footer, dashboard glyphs, CTA icon treatment, and the site favicon have been
+switched off the previous inline SVG mark so the UI reflects the provided
+brand files.

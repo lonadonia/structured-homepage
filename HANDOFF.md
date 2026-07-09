@@ -117,3 +117,10 @@ The design was built to translate to a block theme without loss:
 - Performance: fully static prerender, zero runtime dependencies beyond
   React/Next, all visuals are inline SVG/CSS (no images, no icon font),
   fonts subset + self-hosted.
+
+## 6. Brand assets
+
+The supplied logo/icon PNGs live in `public/brand/` and are consumed by
+`components/Logo.tsx`. Use `logo.png` and `icon.png` on light surfaces, and
+`white-logo.png` / `white-icon.png` on dark surfaces. The site icon is
+`app/icon.png`, copied from the supplied `icon.png`.

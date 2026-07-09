@@ -22,7 +22,7 @@ export default function Card({
   };
   return (
     <div
-      className={`rounded-xl border p-6 transition-colors duration-200 lg:p-8 ${tones[tone]} ${className}`}
+      className={`rounded-lg border p-6 transition-colors duration-200 lg:p-8 ${tones[tone]} ${className}`}
     >
       {children}
     </div>

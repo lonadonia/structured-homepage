@@ -1,7 +1,6 @@
 import Reveal from "@/components/ui/Reveal";
 
 type SectionHeadingProps = {
-  /** Mono section index — the page reads as a numbered argument. */
   index: string;
   label: string;
   title: string;
@@ -10,11 +9,6 @@ type SectionHeadingProps = {
   className?: string;
 };
 
-/**
- * Indexed section header: `01 — WHY STRUCTURE` overline, headline, optional
- * intro. The mono index is set in the intelligence accent; the page's
- * wayfinding system without navigation chrome.
- */
 export default function SectionHeading({
   index,
   label,
@@ -30,17 +24,25 @@ export default function SectionHeading({
 
   return (
     <Reveal className={className}>
-      <p className="text-overline flex items-baseline gap-3">
-        <span className={indexColor}>{index}</span>
-        <span aria-hidden="true" className={labelColor}>
-          —
-        </span>
-        <span className={labelColor}>{label}</span>
-      </p>
-      <h2 className={`text-h2 mt-5 max-w-[20ch] ${titleColor}`}>{title}</h2>
-      {intro && (
-        <p className={`text-body-l mt-5 max-w-[56ch] ${introColor}`}>{intro}</p>
-      )}
+      <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-3">
+          <p className="text-overline flex items-baseline gap-3">
+            <span className={indexColor}>{index}</span>
+            <span aria-hidden="true" className={labelColor}>
+              /
+            </span>
+            <span className={labelColor}>{label}</span>
+          </p>
+        </div>
+        <div className="lg:col-span-8 lg:col-start-5">
+          <h2 className={`text-h2 max-w-[19ch] ${titleColor}`}>{title}</h2>
+          {intro && (
+            <p className={`text-body-l mt-6 max-w-[58ch] ${introColor}`}>
+              {intro}
+            </p>
+          )}
+        </div>
+      </div>
     </Reveal>
   );
 }

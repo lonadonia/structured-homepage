@@ -16,11 +16,15 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Structured™ — Clarity in structure. Confidence in understanding.",
+  title: "Structured\u2122 - Clarity in structure. Confidence in understanding.",
   description:
     "Structured provides the framework for understanding, evaluating, and applying structure within generative search and digital information.",
+  icons: {
+    icon: "/brand/icon.png",
+    apple: "/brand/icon.png",
+  },
   openGraph: {
-    title: "Structured™",
+    title: "Structured\u2122",
     description:
       "The framework for understanding, evaluating, and applying structure within generative search and digital information.",
     type: "website",
@@ -38,14 +42,7 @@ export default function RootLayout({
       className={`${inter.variable} ${plexMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="bg-white font-sans text-ink-900 antialiased">
-        {/* Marks JS availability before paint so scroll-reveals never hide
-            content for no-JS visitors. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js')",
-          }}
-        />
+      <body className="bg-ink-950 font-sans text-ink-900 antialiased">
         {children}
       </body>
     </html>

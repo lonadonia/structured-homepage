@@ -11,7 +11,7 @@ const principles = [
   {
     index: "02",
     title: "Reproducible results",
-    body: "The same information yields the same evaluation — across teams, tools, and time.",
+    body: "The same information yields the same evaluation - across teams, tools, and time.",
   },
   {
     index: "03",
@@ -31,15 +31,13 @@ const stats = [
   { value: 50, suffix: "+", label: "Countries" },
 ];
 
-/**
- * 05 — Method. Authority without noise: four governing commitments as
- * numbered editorial rows, then the proof set in tabular numerals — the one
- * moment on the page where numbers are allowed to move.
- */
 export default function TrustSection() {
   return (
-    <section id="method" className="border-t border-mist bg-paper py-16 lg:py-32">
-      <div className="container-content">
+    <section
+      id="method"
+      className="relative overflow-hidden border-t border-mist bg-white py-20 lg:py-36"
+    >
+      <div className="container-content relative">
         <SectionHeading
           index="05"
           label="Method"
@@ -47,14 +45,16 @@ export default function TrustSection() {
           intro="Structured is built like a standard, not a pitch. Four commitments govern every evaluation the framework produces."
         />
 
-        <div className="mt-12 lg:mt-16">
+        <div className="mt-12 border-y border-mist lg:mt-20">
           {principles.map((p, i) => (
             <Reveal key={p.index} delay={i * 60}>
-              <div className="grid gap-2 border-t border-mist py-6 lg:grid-cols-12 lg:gap-6 lg:py-8">
+              <div className="grid gap-4 border-b border-mist py-7 last:border-b-0 lg:grid-cols-12 lg:gap-8 lg:py-9">
                 <span className="text-overline text-indigo-600 lg:col-span-1">
                   {p.index}
                 </span>
-                <h3 className="text-h4 text-ink-900 lg:col-span-4">{p.title}</h3>
+                <h3 className="text-h4 text-ink-900 lg:col-span-4">
+                  {p.title}
+                </h3>
                 <p className="text-body max-w-[62ch] text-gray-600 lg:col-span-7">
                   {p.body}
                 </p>
@@ -63,24 +63,24 @@ export default function TrustSection() {
           ))}
         </div>
 
-        {/* Proof — numbers as claims */}
         <Reveal delay={120}>
-          <dl className="mt-8 grid grid-cols-2 gap-y-10 border-t border-gray-300 pt-10 lg:mt-12 lg:grid-cols-4 lg:pt-12">
-            {stats.map((s) => (
-              <div key={s.label} className="flex flex-col gap-3">
-                <dd className="text-data-xl order-2 text-ink-900">
+          <dl className="mt-10 grid overflow-hidden rounded-lg border border-ink-800 bg-ink-950 text-paper lg:mt-14 lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`flex min-h-36 flex-col justify-between border-white/10 p-6 ${
+                  i > 0 ? "border-t lg:border-t-0 lg:border-l" : ""
+                }`}
+              >
+                <dt className="text-overline-s text-gray-500">{s.label}</dt>
+                <dd className="text-data-xl text-paper">
                   <Counter value={s.value} suffix={s.suffix} />
                 </dd>
-                <dt className="text-overline-s order-1 text-gray-500">
-                  {s.label}
-                </dt>
               </div>
             ))}
-            <div className="flex flex-col gap-3">
-              <dd className="text-data-xl order-2 text-indigo-600">∞</dd>
-              <dt className="text-overline-s order-1 text-gray-500">
-                Possibilities
-              </dt>
+            <div className="flex min-h-36 flex-col justify-between border-t border-white/10 p-6 lg:border-t-0 lg:border-l">
+              <dt className="text-overline-s text-gray-500">Possibilities</dt>
+              <dd className="text-data-xl text-indigo-400">{"\u221E"}</dd>
             </div>
           </dl>
         </Reveal>

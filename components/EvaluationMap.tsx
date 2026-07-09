@@ -1,36 +1,25 @@
 import { colors } from "@/lib/design-tokens";
 
-/**
- * The visual identity moment: an evaluation map. Entities are positioned by
- * structural clarity (x) and semantic consistency (y); evaluated entities sit
- * above the integrity threshold in indigo. Drawn like a technical instrument —
- * hairline grid, measured ticks, mono annotations — on the light ground.
- *
- * Passes the caption test: every mark depicts something true about the system.
- */
-
 const W = 960;
 const H = 540;
 const PLOT = { left: 64, right: 920, top: 28, bottom: 470 };
 
-/** Integrity threshold: y = 340 - 0.257 * (x - 64) */
 const thresholdY = (x: number) =>
   340 - ((340 - 120) / (PLOT.right - PLOT.left)) * (x - PLOT.left);
 
-/** Entities not yet evaluated (below threshold). */
 const grayNodes: Array<[number, number]> = [
   [128, 406], [176, 362], [210, 418], [258, 338], [302, 390],
   [330, 300], [378, 352], [416, 282], [455, 330], [500, 376],
   [540, 260], [586, 312], [640, 352], [700, 286],
 ];
 
-/** Evaluated entities (above threshold). */
 const indigoNodes: Array<[number, number]> = [
   [300, 208], [392, 196], [470, 168], [540, 190],
   [610, 148], [760, 128], [830, 96], [876, 108],
 ];
 
 const highlight = { x: 688, y: 132 };
+const highlightPoint: [number, number] = [highlight.x, highlight.y];
 
 const gridX: number[] = [];
 for (let x = PLOT.left; x <= 880; x += 48) gridX.push(x);
@@ -40,13 +29,34 @@ for (let y = PLOT.bottom; y >= PLOT.top + 10; y -= 48) gridY.push(y);
 const ticksX = [64, 160, 256, 352, 448, 544, 640, 736, 832];
 const ticksY = [470, 374, 278, 182, 86];
 
+const relationshipEdges: Array<[[number, number], [number, number]]> = [
+  [indigoNodes[0], indigoNodes[1]],
+  [indigoNodes[1], indigoNodes[2]],
+  [indigoNodes[2], indigoNodes[3]],
+  [indigoNodes[3], indigoNodes[4]],
+  [indigoNodes[4], highlightPoint],
+  [indigoNodes[5], indigoNodes[6]],
+  [indigoNodes[6], indigoNodes[7]],
+];
+
 export default function EvaluationMap({
   className = "",
   id,
+  tone = "light",
 }: {
   className?: string;
   id?: string;
+  tone?: "light" | "dark";
 }) {
+  const dark = tone === "dark";
+  const grid = dark ? colors.brand.paper : colors.brand.ink;
+  const axis = dark ? colors.ink[600] : colors.gray[300];
+  const muted = dark ? colors.gray[500] : colors.gray[500];
+  const nodeMuted = dark ? colors.ink[600] : colors.gray[300];
+  const readoutFill = dark ? colors.ink[900] : "#FFFFFF";
+  const readoutStroke = dark ? colors.ink[700] : colors.brand.mist;
+  const text = dark ? colors.brand.paper : colors.brand.ink;
+
   return (
     <svg
       id={id}
@@ -55,8 +65,13 @@ export default function EvaluationMap({
       role="img"
       aria-label="Evaluation map plotting entities by structural clarity and semantic consistency. Evaluated entities cluster above the integrity threshold; one entity is highlighted with a score of 92 out of 100."
     >
-      {/* Construction grid */}
-      <g stroke={colors.brand.ink} strokeOpacity="0.045" strokeWidth="1">
+      <polygon
+        points={`${PLOT.left},${thresholdY(PLOT.left)} ${PLOT.right},${thresholdY(PLOT.right)} ${PLOT.right},${PLOT.top} ${PLOT.left},${PLOT.top}`}
+        fill={colors.brand.indigo}
+        fillOpacity={dark ? "0.09" : "0.045"}
+      />
+
+      <g stroke={grid} strokeOpacity={dark ? "0.06" : "0.045"} strokeWidth="1">
         {gridX.map((x) => (
           <line key={x} x1={x} y1={PLOT.top} x2={x} y2={PLOT.bottom} />
         ))}
@@ -65,8 +80,7 @@ export default function EvaluationMap({
         ))}
       </g>
 
-      {/* Axes */}
-      <g stroke={colors.gray[300]} strokeWidth="1">
+      <g stroke={axis} strokeWidth="1">
         <line x1={PLOT.left} y1={PLOT.top} x2={PLOT.left} y2={PLOT.bottom} />
         <line x1={PLOT.left} y1={PLOT.bottom} x2={PLOT.right} y2={PLOT.bottom} />
         {ticksX.map((x) => (
@@ -77,17 +91,15 @@ export default function EvaluationMap({
         ))}
       </g>
 
-      {/* Axis labels — the instrument voice */}
       <text
         x={PLOT.right}
         y={502}
         textAnchor="end"
         fontFamily="var(--font-plex-mono), monospace"
         fontSize="11"
-        letterSpacing="0.08em"
-        fill={colors.gray[500]}
+        fill={muted}
       >
-        STRUCTURAL CLARITY →
+        STRUCTURAL CLARITY -&gt;
       </text>
       <text
         x={36}
@@ -96,13 +108,11 @@ export default function EvaluationMap({
         textAnchor="start"
         fontFamily="var(--font-plex-mono), monospace"
         fontSize="11"
-        letterSpacing="0.08em"
-        fill={colors.gray[500]}
+        fill={muted}
       >
-        SEMANTIC CONSISTENCY →
+        SEMANTIC CONSISTENCY -&gt;
       </text>
 
-      {/* Integrity threshold */}
       <line
         x1={PLOT.left}
         y1={thresholdY(PLOT.left)}
@@ -110,7 +120,7 @@ export default function EvaluationMap({
         y2={thresholdY(PLOT.right)}
         stroke={colors.brand.indigo}
         strokeWidth="1"
-        strokeOpacity="0.45"
+        strokeOpacity={dark ? "0.65" : "0.45"}
         strokeDasharray="4 5"
       />
       <text
@@ -119,44 +129,46 @@ export default function EvaluationMap({
         transform="rotate(-14.4 430 238)"
         fontFamily="var(--font-plex-mono), monospace"
         fontSize="10"
-        letterSpacing="0.08em"
         fill={colors.brand.indigo}
-        fillOpacity="0.75"
+        fillOpacity={dark ? "0.9" : "0.75"}
       >
         INTEGRITY THRESHOLD
       </text>
 
-      {/* Entities awaiting evaluation */}
-      <g fill={colors.gray[300]}>
+      <g stroke={colors.brand.indigo} strokeOpacity={dark ? "0.16" : "0.12"} strokeWidth="1">
+        {relationshipEdges.map(([[x1, y1], [x2, y2]], i) => (
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />
+        ))}
+      </g>
+
+      <g fill={nodeMuted}>
         {grayNodes.map(([x, y], i) => (
           <circle key={i} cx={x} cy={y} r={3.5} />
         ))}
       </g>
 
-      {/* Evaluated entities */}
-      <g fill={colors.brand.indigo} fillOpacity="0.9">
+      <g fill={colors.brand.indigo} fillOpacity={dark ? "1" : "0.9"}>
         {indigoNodes.map(([x, y], i) => (
           <circle key={i} cx={x} cy={y} r={4} />
         ))}
       </g>
 
-      {/* Highlighted entity + readout */}
       <circle
         cx={highlight.x}
         cy={highlight.y}
-        r={11}
+        r={13}
         fill="none"
         stroke={colors.brand.indigo}
         strokeWidth="1"
-        strokeOpacity="0.4"
+        strokeOpacity={dark ? "0.65" : "0.4"}
       />
-      <circle cx={highlight.x} cy={highlight.y} r={4.5} fill={colors.brand.indigo} />
+      <circle cx={highlight.x} cy={highlight.y} r={4.5} fill={colors.indigo[400]} />
       <line
         x1={highlight.x + 8}
         y1={highlight.y - 8}
         x2={726}
         y2={98}
-        stroke={colors.gray[300]}
+        stroke={dark ? colors.ink[600] : colors.gray[300]}
         strokeWidth="1"
       />
       <g>
@@ -166,16 +178,15 @@ export default function EvaluationMap({
           width={170}
           height={58}
           rx={8}
-          fill="#FFFFFF"
-          stroke={colors.brand.mist}
+          fill={readoutFill}
+          stroke={readoutStroke}
         />
         <text
           x={742}
           y={76}
           fontFamily="var(--font-plex-mono), monospace"
           fontSize="10"
-          letterSpacing="0.08em"
-          fill={colors.gray[500]}
+          fill={muted}
         >
           ENTITY 128
         </text>
@@ -185,10 +196,10 @@ export default function EvaluationMap({
           fontFamily="var(--font-inter), sans-serif"
           fontSize="16"
           fontWeight="600"
-          fill={colors.brand.ink}
+          fill={text}
           style={{ fontVariantNumeric: "tabular-nums" }}
         >
-          Score 92<tspan fill={colors.gray[400]}>/100</tspan>
+          Score 92<tspan fill={muted}>/100</tspan>
         </text>
       </g>
     </svg>

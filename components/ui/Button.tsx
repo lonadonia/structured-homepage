@@ -17,13 +17,16 @@ type ButtonProps = {
 
 const base =
   "group inline-flex items-center justify-center gap-2.5 rounded-lg font-semibold " +
-  "transition-colors duration-200 select-none";
+  "transition-[background-color,border-color,color,box-shadow,transform] duration-200 select-none " +
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
 
 const variants = {
-  primary: "bg-blue-600 text-white hover:bg-blue-700",
+  primary:
+    "border border-blue-500/70 bg-blue-600 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_0.18),0_14px_30px_-18px_rgb(37_99_235_/_0.75)] hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-[inset_0_1px_0_rgb(255_255_255_/_0.16),0_18px_36px_-20px_rgb(37_99_235_/_0.9)]",
   ghost:
-    "border border-gray-300 text-ink-900 hover:border-gray-500 hover:text-ink-950",
-  "ghost-dark": "border border-ink-600 text-paper hover:border-gray-400",
+    "border border-gray-300 bg-white/40 text-ink-900 shadow-[inset_0_1px_0_rgb(255_255_255_/_0.78)] hover:-translate-y-0.5 hover:border-gray-500 hover:bg-white hover:text-ink-950",
+  "ghost-dark":
+    "border border-white/16 bg-white/[0.03] text-paper shadow-[inset_0_1px_0_rgb(255_255_255_/_0.08)] hover:-translate-y-0.5 hover:border-indigo-400/70 hover:bg-white/[0.06]",
 };
 
 const sizes = {

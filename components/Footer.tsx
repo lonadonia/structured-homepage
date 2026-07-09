@@ -15,18 +15,14 @@ const columns = [
   },
 ];
 
-/**
- * The deepest surface on the page (ink-950) — the dark shell’s final edge.
- * Structured like everything above it: hairlines, mono overlines, restraint.
- */
 export default function Footer() {
   return (
-    <footer className="border-t border-ink-700 bg-ink-950 text-paper">
+    <footer className="border-t border-white/10 bg-ink-950 text-paper">
       <div className="container-content">
-        <div className="grid gap-12 py-16 lg:grid-cols-12 lg:gap-6 lg:py-20">
+        <div className="grid gap-12 py-16 lg:grid-cols-12 lg:gap-8 lg:py-20">
           <div className="lg:col-span-5">
             <Logo tone="dark" />
-            <p className="text-body-s mt-6 max-w-[36ch] text-gray-500">
+            <p className="text-body-s mt-6 max-w-[38ch] text-gray-500">
               The framework for understanding, evaluating, and applying
               structure within generative search and digital information.
             </p>
@@ -55,9 +51,9 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-ink-700 py-8 sm:flex-row sm:items-baseline sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-white/10 py-8 sm:flex-row sm:items-baseline sm:justify-between">
           <p className="text-caption text-gray-500">
-            © 2026 Structured™. All rights reserved.
+            {"\u00A9"} 2026 Structured{"\u2122"}. All rights reserved.
           </p>
           <p className="text-overline-s text-gray-600">
             Clarity in structure. Confidence in understanding.

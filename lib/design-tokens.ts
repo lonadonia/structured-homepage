@@ -67,20 +67,20 @@ export const typography = {
     sans: "Inter",
     mono: "IBM Plex Mono",
   },
-  /** Display + headings use 600 only; 300 reserved for display-scale numerals. */
-  weights: { light: 300, regular: 400, medium: 500, semibold: 600 },
+  /** Display + headings use a calmer editorial weight; 300 reserved for numerals. */
+  weights: { light: 300, regular: 400, medium: 500, editorial: 560, semibold: 600 },
   scale: {
-    displayXl: { desktop: 72, mobile: 44, lineHeight: 1.05, tracking: "-0.02em", weight: 600 },
-    displayL: { desktop: 56, mobile: 38, lineHeight: 1.1, tracking: "-0.02em", weight: 600 },
-    h2: { desktop: 40, mobile: 31, lineHeight: 1.15, tracking: "-0.015em", weight: 600 },
-    h3: { desktop: 28, mobile: 24, lineHeight: 1.25, tracking: "-0.01em", weight: 600 },
-    h4: { desktop: 21, mobile: 19, lineHeight: 1.35, tracking: "-0.005em", weight: 600 },
+    displayXl: { desktop: 80, mobile: 42, lineHeight: 0.98, tracking: "0", weight: 560 },
+    displayL: { desktop: 68, mobile: 40, lineHeight: 1.02, tracking: "0", weight: 560 },
+    h2: { desktop: 48, mobile: 34, lineHeight: 1.08, tracking: "0", weight: 560 },
+    h3: { desktop: 30, mobile: 24, lineHeight: 1.25, tracking: "0", weight: 560 },
+    h4: { desktop: 21, mobile: 19, lineHeight: 1.35, tracking: "0", weight: 560 },
     bodyL: { desktop: 20, mobile: 18, lineHeight: 1.6, weight: 400 },
     body: { desktop: 17, mobile: 16, lineHeight: 1.65, weight: 400 },
     bodyS: { desktop: 15, mobile: 15, lineHeight: 1.6, weight: 400 },
     caption: { desktop: 13, mobile: 13, lineHeight: 1.5, weight: 400 },
-    overline: { desktop: 13, mobile: 13, lineHeight: 1.4, tracking: "0.08em", weight: 500 },
-    dataXl: { desktop: 56, mobile: 40, lineHeight: 1.0, tracking: "-0.01em", weight: 300 },
+    overline: { desktop: 13, mobile: 13, lineHeight: 1.4, tracking: "0", weight: 500 },
+    dataXl: { desktop: 56, mobile: 40, lineHeight: 1.0, tracking: "0", weight: 300 },
     dataM: { desktop: 32, mobile: 32, lineHeight: 1.1, weight: 500 },
   },
   measure: { headingMax: "18ch", bodyMax: "68ch", introMax: "56ch" },
@@ -94,8 +94,8 @@ export const radius = {
   xs: 2,
   sm: 4,
   md: 8, // buttons, inputs
-  lg: 12, // cards
-  xl: 16, // dashboard artifact frame
+  lg: 8, // cards and framed tools
+  xl: 8, // retained alias for framed tools
   pill: 999, // diagram nodes
 } as const;
 

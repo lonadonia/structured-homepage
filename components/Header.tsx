@@ -46,8 +46,8 @@ export default function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
         solid
-          ? "border-b border-ink-700 bg-ink-900 shadow-nav"
-          : "border-b border-transparent bg-transparent"
+          ? "border-b border-white/10 bg-ink-950/94 shadow-nav backdrop-blur-xl"
+          : "border-b border-transparent bg-[linear-gradient(180deg,rgb(7_10_16_/_0.62),transparent)]"
       }`}
     >
       <a
@@ -61,12 +61,12 @@ export default function Header() {
         <Logo tone="dark" />
 
         {/* Desktop navigation */}
-        <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
           {NAV.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-[15px] font-medium text-gray-400 underline-offset-4 transition-colors duration-200 hover:text-paper hover:underline"
+              className="relative py-2 text-[14px] font-medium text-gray-400 transition-colors duration-200 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-indigo-400 after:transition-transform after:duration-200 hover:text-paper hover:after:scale-x-100"
             >
               {item.label}
             </a>
@@ -74,7 +74,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <Button href="#cta" size="md" arrow>
+          <Button href="#cta" size="md" variant="ghost-dark" arrow>
             Request evaluation
           </Button>
         </div>
@@ -86,7 +86,7 @@ export default function Header() {
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
-          className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-paper lg:hidden"
+          className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-paper transition-colors duration-200 lg:hidden"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             {open ? (
@@ -113,7 +113,7 @@ export default function Header() {
         <nav
           id="mobile-nav"
           aria-label="Primary"
-          className="fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink-900 lg:hidden"
+          className="bg-coordinate-dark fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink-950 lg:hidden"
         >
           <ul className="container-content flex flex-col pt-6">
             {NAV.map((item, i) => (
