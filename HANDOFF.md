@@ -29,13 +29,13 @@ the built site makes no third-party requests.
 | Zone | Component | Ground |
 |---|---|---|
 | Nav | `Header` | ink (transparent → solid on scroll) |
-| Hero | `Hero` | **ink-900** + dot grid |
+| Hero | `Hero` | **ink-950** + dot grid |
 | 01 Why structure | `PositioningSection` | paper |
 | 02 The framework | `FrameworkSection` | white |
 | 03 Evaluation | `EvaluationSection` | paper |
-| 04 The evaluation map | `IdentitySection` | white |
+| 04 The evaluation map | `IdentitySection` | paper |
 | 05 Method | `TrustSection` | paper |
-| Closing CTA | `CTASection` | **ink-900** + dot grid + glow |
+| Closing CTA | `CTASection` | **ink-950** + dot grid + glow |
 | Footer | `Footer` | **ink-950** |
 
 Design decisions are enforced in two places:
@@ -124,3 +124,24 @@ The supplied logo/icon PNGs live in `public/brand/` and are consumed by
 `components/Logo.tsx`. Use `logo.png` and `icon.png` on light surfaces, and
 `white-logo.png` / `white-icon.png` on dark surfaces. The site icon is
 `app/icon.png`, copied from the supplied `icon.png`.
+
+## 7. Single-file HTML reference
+
+`structured-homepage-reference.html` (project root) is a fully
+self-contained snapshot of the homepage — CSS, fonts, and every image are
+inlined as data URIs, so it opens correctly straight from disk (`file://`)
+with no server and no network access. Useful for sharing with the client or
+archiving a point-in-time visual reference outside of git/Next.js.
+
+JavaScript is intentionally stripped from the snapshot: the page's content
+is fully visible without it by design (`ui/Reveal`'s hidden state only
+applies once React marks the document motion-ready), so the static file
+reads correctly. Only the mobile hamburger menu, scroll-reveal stagger, and
+the stat counter tick-up animation are inert.
+
+To regenerate after making changes:
+
+```bash
+npm run build && npm run start   # leave this running in one terminal
+npm run export:reference         # in another — writes the file at project root
+```
