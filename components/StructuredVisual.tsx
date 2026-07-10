@@ -1,14 +1,17 @@
 import { colors } from "@/lib/design-tokens";
 
 /**
- * The signature brand visual: an unresolved field of scattered points on the
- * left that resolves into an ordered lattice on the right — chaos becoming
- * structure. Every node converges onto a 48px cell (2× the 24px dot grid),
- * so the artwork is constructed on the page's own grid rather than decorating
- * it. 1px indigo strokes, one permitted radial glow, and a single slow
- * opacity drift (>=20s, disabled under prefers-reduced-motion).
+ * The signature brand visual: an unresolved field of signal on the left that
+ * resolves into an ordered lattice on the right — chaos becoming structure.
+ * Structural nodes snap to a 48px cell (2× the 24px dot grid), so the
+ * artwork is constructed on the page's own grid rather than decorating it.
+ * A finer, ungridded "dust" layer gives the chaotic zone real visual mass
+ * instead of reading as a few sparse dots in empty space. 1px indigo
+ * strokes, two permitted radial glows (one soft/wide, one tight/bright —
+ * both part of the single "resolution glow" concept), and a slow
+ * opacity-only drift (>=20s, disabled under prefers-reduced-motion).
  *
- * Geometry is generated with a seeded PRNG at module scope, so the server
+ * Geometry is generated with seeded PRNGs at module scope, so the server
  * and client always render identical markup.
  */
 
@@ -55,10 +58,9 @@ type LatticeNode = {
   y: number;
   /** 1 = fully scattered (left edge), 0 = fully resolved (right edge). */
   d: number;
-  skip: boolean;
 };
 
-const rand = mulberry32(7);
+const randField = mulberry32(7);
 
 const nodes: LatticeNode[] = [];
 for (let gx = 0; gx < COLS; gx++) {
@@ -67,10 +69,9 @@ for (let gx = 0; gx < COLS; gx++) {
     const d = Math.pow(1 - t, 1.7);
     const lx = X0 + gx * CELL;
     const ly = Y0 + gy * CELL;
-    const jx = (rand() * 2 - 1) * 38 * d;
-    const jy = (rand() * 2 - 1) * 38 * d;
-    const skip = d > 0.75 && rand() < 0.25;
-    nodes.push({ gx, gy, lx, ly, x: lx + jx, y: ly + jy, d, skip });
+    const jx = (randField() * 2 - 1) * 40 * d;
+    const jy = (randField() * 2 - 1) * 40 * d;
+    nodes.push({ gx, gy, lx, ly, x: lx + jx, y: ly + jy, d });
   }
 }
 
@@ -81,38 +82,55 @@ const ORDERED = 0.22;
 /** Lattice segments between resolved neighbours (right + down). */
 const latticeEdges: Array<{ x1: number; y1: number; x2: number; y2: number; o: number }> = [];
 for (const n of nodes) {
-  if (n.d > ORDERED || n.skip) continue;
+  if (n.d > ORDERED) continue;
   for (const [nx, ny] of [
     [n.gx + 1, n.gy],
     [n.gx, n.gy + 1],
   ]) {
     if (nx >= COLS || ny >= ROWS) continue;
     const m = at(nx, ny);
-    if (m.d > ORDERED || m.skip) continue;
+    if (m.d > ORDERED) continue;
     latticeEdges.push({
       x1: n.x,
       y1: n.y,
       x2: m.x,
       y2: m.y,
-      o: 0.14 + 0.2 * (1 - n.d),
+      o: 0.16 + 0.22 * (1 - n.d),
     });
   }
 }
 
 /** Convergence trails: mid-zone points drawn toward their lattice position. */
+const randTrails = mulberry32(13);
 const trails = nodes.filter(
-  (n) => !n.skip && n.d > ORDERED && n.d < 0.6 && rand() < 0.45
+  (n) => n.d > ORDERED && n.d < 0.6 && randTrails() < 0.45
 );
 
-/** Sparse noise connections in the scattered zone. */
+/** Sparse noise connections among the coarse scattered nodes. */
+const randChaos = mulberry32(23);
 const chaosEdges: Array<{ a: LatticeNode; b: LatticeNode }> = [];
-const scattered = nodes.filter((n) => n.d > 0.5 && !n.skip);
+const scattered = nodes.filter((n) => n.d > 0.5);
 for (const a of scattered) {
-  if (rand() > 0.22) continue;
+  if (randChaos() > 0.12) continue;
   const near = scattered.filter(
     (b) => b !== a && Math.hypot(b.x - a.x, b.y - a.y) < 100
   );
-  if (near.length) chaosEdges.push({ a, b: near[Math.floor(rand() * near.length)] });
+  if (near.length) chaosEdges.push({ a, b: near[Math.floor(randChaos() * near.length)] });
+}
+
+/** Fine dust layer: ungridded texture giving the chaotic zone real mass. */
+const randDust = mulberry32(101);
+type Dust = { x: number; y: number; r: number; o: number; c: string };
+const dust: Dust[] = [];
+for (let i = 0; i < 260; i++) {
+  const t = Math.pow(randDust(), 2.2);
+  const x = t * W;
+  const localD = Math.pow(1 - x / W, 1.7);
+  if (localD < 0.3) continue;
+  const y = randDust() * H;
+  const r = 0.5 + randDust() * 0.9;
+  const o = (0.14 + 0.4 * localD) * (0.65 + 0.35 * randDust());
+  dust.push({ x, y, r, o, c: mixColor(colors.gray[600], colors.indigo[400], (1 - localD) * 0.35) });
 }
 
 /** Evaluated entities: highlighted nodes on the resolved side. */
@@ -132,12 +150,20 @@ const crosses = [
   [13, 0],
 ].map(([gx, gy]) => at(gx, gy));
 
+/** Ruler ticks under the resolved columns — a restrained blueprint detail. */
+const tickCols = [10, 11, 12, 13, 14];
+
+/** Annotation target: a calm, near-center-row node on the resolved side. */
+const annotationNode = at(12, 6);
+
 type StructuredVisualProps = {
   className?: string;
   id?: string;
   preserveAspectRatio?: string;
   /** Disable the slow drift (e.g. when echoed at low opacity in the CTA). */
   still?: boolean;
+  /** Show the single "Entity 128 — Resolved" leader-line annotation. */
+  annotated?: boolean;
 };
 
 export default function StructuredVisual({
@@ -145,7 +171,10 @@ export default function StructuredVisual({
   id,
   preserveAspectRatio = "xMidYMid meet",
   still = false,
+  annotated = false,
 }: StructuredVisualProps) {
+  const gid = id ?? "lattice";
+
   return (
     <svg
       id={id}
@@ -156,25 +185,42 @@ export default function StructuredVisual({
       focusable="false"
     >
       <defs>
-        <radialGradient id={`${id ?? "lattice"}-glow`}>
-          <stop offset="0%" stopColor={colors.brand.indigo} stopOpacity="0.22" />
+        <radialGradient id={`${gid}-glow-soft`}>
+          <stop offset="0%" stopColor={colors.brand.indigo} stopOpacity="0.2" />
           <stop offset="100%" stopColor={colors.brand.indigo} stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id={`${gid}-glow-core`}>
+          <stop offset="0%" stopColor={colors.indigo[400]} stopOpacity="0.25" />
+          <stop offset="100%" stopColor={colors.indigo[400]} stopOpacity="0" />
         </radialGradient>
       </defs>
 
-      {/* The only permitted gradient: the resolution glow */}
-      <circle cx={540} cy={264} r={250} fill={`url(#${id ?? "lattice"}-glow)`} />
+      {/* The permitted gradient, in two parts: a wide ambient wash and a
+          tighter bright core over the resolution zone. */}
+      <circle cx={560} cy={280} r={280} fill={`url(#${gid}-glow-soft)`} />
+      <circle cx={612} cy={296} r={120} fill={`url(#${gid}-glow-core)`} />
+
+      {/* Resolved surface — a flat low-opacity plate, not a gradient,
+          giving the lattice a sense of settled weight. */}
+      <rect x={492} y={0} width={228} height={H} fill={colors.brand.indigo} fillOpacity="0.045" />
 
       <g className={still ? undefined : "lattice-drift"}>
-        {/* Noise connections (scattered zone) */}
-        <g stroke={colors.gray[500]} strokeWidth="1" strokeOpacity="0.16">
+        {/* Fine dust: the unresolved signal, given real texture and mass */}
+        <g>
+          {dust.map((d, i) => (
+            <circle key={i} cx={d.x} cy={d.y} r={d.r} fill={d.c} fillOpacity={d.o} />
+          ))}
+        </g>
+
+        {/* Noise connections among coarse scattered nodes */}
+        <g stroke={colors.gray[500]} strokeWidth="1" strokeOpacity="0.14">
           {chaosEdges.map(({ a, b }, i) => (
             <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
           ))}
         </g>
 
         {/* Convergence trails: scattered position → lattice position */}
-        <g stroke={colors.indigo[500]} strokeWidth="1" strokeOpacity="0.15">
+        <g stroke={colors.indigo[500]} strokeWidth="1" strokeOpacity="0.16">
           {trails.map((n, i) => (
             <line key={i} x1={n.x} y1={n.y} x2={n.lx} y2={n.ly} />
           ))}
@@ -194,8 +240,16 @@ export default function StructuredVisual({
           ))}
         </g>
 
+        {/* Ruler ticks — a restrained instrument/blueprint detail */}
+        <g stroke={colors.indigo[400]} strokeOpacity="0.3" strokeWidth="1">
+          {tickCols.map((gx) => {
+            const x = X0 + gx * CELL;
+            return <line key={gx} x1={x} y1={H - 20} x2={x} y2={H - 12} />;
+          })}
+        </g>
+
         {/* Register marks */}
-        <g stroke={colors.brand.paper} strokeWidth="1" strokeOpacity="0.28">
+        <g stroke={colors.brand.paper} strokeWidth="1" strokeOpacity="0.26">
           {crosses.map((n, i) => (
             <g key={i}>
               <line x1={n.x - 4} y1={n.y} x2={n.x + 4} y2={n.y} />
@@ -204,20 +258,18 @@ export default function StructuredVisual({
           ))}
         </g>
 
-        {/* Point field */}
+        {/* Structural point field */}
         <g>
-          {nodes
-            .filter((n) => !n.skip)
-            .map((n, i) => (
-              <circle
-                key={i}
-                cx={n.x}
-                cy={n.y}
-                r={1.8}
-                fill={mixColor(colors.gray[500], colors.indigo[400], 1 - n.d)}
-                fillOpacity={0.4 + 0.55 * (1 - n.d)}
-              />
-            ))}
+          {nodes.map((n, i) => (
+            <circle
+              key={i}
+              cx={n.x}
+              cy={n.y}
+              r={1.9}
+              fill={mixColor(colors.gray[500], colors.indigo[400], 1 - n.d)}
+              fillOpacity={0.42 + 0.55 * (1 - n.d)}
+            />
+          ))}
         </g>
 
         {/* Evaluated entities */}
@@ -231,12 +283,54 @@ export default function StructuredVisual({
                 fill="none"
                 stroke={colors.indigo[500]}
                 strokeWidth="1"
-                strokeOpacity="0.45"
+                strokeOpacity="0.5"
               />
               <circle cx={n.x} cy={n.y} r={2.4} fill={colors.indigo[400]} />
             </g>
           ))}
         </g>
+
+        {/* Single elegant annotation — echoes "Entity 128" from the
+            evaluation map, rewarding attentive scrollers later on the page */}
+        {annotated && (
+          <g>
+            <line
+              x1={annotationNode.x}
+              y1={annotationNode.y}
+              x2={annotationNode.x + 34}
+              y2={annotationNode.y - 34}
+              stroke={colors.indigo[400]}
+              strokeWidth="1"
+              strokeOpacity="0.55"
+            />
+            <circle
+              cx={annotationNode.x + 34}
+              cy={annotationNode.y - 34}
+              r="1.6"
+              fill={colors.indigo[400]}
+            />
+            <text
+              x={annotationNode.x + 42}
+              y={annotationNode.y - 31}
+              fontFamily="var(--font-plex-mono), monospace"
+              fontSize="10"
+              letterSpacing="0.06em"
+              fill={colors.gray[300]}
+            >
+              ENTITY 128
+            </text>
+            <text
+              x={annotationNode.x + 42}
+              y={annotationNode.y - 18}
+              fontFamily="var(--font-plex-mono), monospace"
+              fontSize="10"
+              letterSpacing="0.06em"
+              fill={colors.indigo[400]}
+            >
+              RESOLVED
+            </text>
+          </g>
+        )}
       </g>
     </svg>
   );
