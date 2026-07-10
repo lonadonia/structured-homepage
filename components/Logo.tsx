@@ -53,7 +53,7 @@ export default function Logo({
         width={1234}
         height={277}
         alt="Structured"
-        className="h-8 w-auto object-contain lg:h-9"
+        className="h-[42px] w-auto object-contain lg:h-[47px]"
         priority
       />
     </a>
