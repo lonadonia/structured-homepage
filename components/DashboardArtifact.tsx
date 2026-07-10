@@ -243,7 +243,7 @@ export default function DashboardArtifact({ className = "" }: { className?: stri
                 Recent Evaluations
               </p>
               <span className="text-[12px] font-medium text-blue-600">
-                View all -&gt;
+                View all {"→"}
               </span>
             </div>
             <div className="grid grid-cols-[1fr_auto_auto] gap-x-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_auto_auto]">
