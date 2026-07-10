@@ -9,62 +9,46 @@ const readouts = [
 ];
 
 /**
- * The dark shell opens here. One dominant gesture — the canonical tagline at
- * full display scale — carries the viewport; the chaos→lattice signature
- * visual lives as full-bleed atmosphere behind it, brightest where the page
- * is open (lower-right) and faded out under the text for contrast. A single
- * clean readout strip closes the section — numbers as claims, not a second
- * instrument panel competing with the headline.
+ * The dark shell opens with one dominant claim. The signature field stays
+ * full-bleed at every breakpoint, while the compact measurement strip makes
+ * the first screen feel like a working framework rather than a campaign page.
  */
 export default function Hero() {
   return (
     <section id="top" className="relative isolate overflow-hidden bg-ink-950 text-paper">
-      {/* Faint coordinate grid */}
       <div
         aria-hidden="true"
-        className="bg-coordinate-dark absolute inset-0 opacity-35 [mask-image:linear-gradient(to_bottom,black,transparent_88%)]"
+        className="bg-coordinate-dark absolute inset-0 opacity-35 [mask-image:linear-gradient(to_bottom,black,transparent_92%)]"
       />
 
-      {/* The signature visual, full-bleed atmosphere: masked to stay out of
-          the text's way on the left, resolving into view on the open right */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 hidden lg:block"
+        className="pointer-events-none absolute inset-x-[-26%] bottom-0 h-[35%] opacity-90 sm:inset-x-[12%] sm:h-[39%] lg:inset-0 lg:h-auto lg:opacity-100"
       >
         <StructuredVisual
           id="structured-lattice"
-          className="lattice-drift h-full w-full opacity-90 [mask-image:radial-gradient(78%_88%_at_78%_54%,black_40%,transparent_82%)]"
+          className="h-full w-full [mask-image:linear-gradient(to_bottom,transparent,black_24%)] lg:[mask-image:radial-gradient(78%_88%_at_78%_54%,black_40%,transparent_82%)]"
           preserveAspectRatio="xMidYMid slice"
           annotated
+          preload
         />
       </div>
 
-      {/* Scrim: guarantees text contrast regardless of the visual beneath it */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 hidden bg-[linear-gradient(100deg,#070a10_40%,rgba(7,10,16,0.5)_58%,transparent_76%)] lg:block"
+        className="absolute inset-0 hidden bg-[linear-gradient(100deg,#070a10_38%,rgba(7,10,16,0.62)_56%,transparent_76%)] lg:block"
       />
 
-      {/* Soft top-right glow + bottom fade into the light core */}
-      <div
-        aria-hidden="true"
-        className="absolute -right-24 -top-24 h-[560px] w-[560px] bg-[radial-gradient(circle,rgb(79_70_229_/_0.14),transparent_70%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-32 bg-[linear-gradient(180deg,transparent,#070a10)]"
-      />
-
-      <div className="container-content relative pt-32 pb-16 lg:pt-44 lg:pb-24">
+      <div className="container-content relative pt-24 pb-12 sm:pt-32 lg:pt-32 lg:pb-16">
         <Reveal>
           <p className="text-overline flex items-center gap-3 text-gray-400">
             <span className="h-px w-8 shrink-0 bg-indigo-400" aria-hidden="true" />
-            Generative search · Information structure
+            Generative search {"\u00B7"} Information structure
           </p>
         </Reveal>
 
         <Reveal delay={80}>
-          <h1 className="text-display-xl mt-7 max-w-[20ch] text-paper">
+          <h1 className="text-display-xl mt-6 max-w-[20ch] text-paper">
             Clarity in structure.
             <br />
             Confidence in understanding.
@@ -72,7 +56,7 @@ export default function Hero() {
         </Reveal>
 
         <Reveal delay={160}>
-          <p className="text-body-l mt-7 max-w-[52ch] text-gray-300">
+          <p className="text-body-l mt-6 max-w-[52ch] text-gray-300">
             Structured provides the framework for understanding, evaluating,
             and applying structure within generative search and digital
             information.
@@ -80,7 +64,7 @@ export default function Hero() {
         </Reveal>
 
         <Reveal delay={240}>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <Button href="#cta" arrow>
               Request an evaluation
             </Button>
@@ -90,33 +74,29 @@ export default function Hero() {
           </div>
         </Reveal>
 
-        {/* Mobile / tablet: the visual as its own full-bleed band, since it
-            can't live as background atmosphere behind stacked text */}
-        <Reveal delay={200} className="relative -mx-5 mt-14 h-64 sm:h-80 md:-mx-10 lg:hidden">
-          <StructuredVisual
-            id="structured-lattice-mobile"
-            className="lattice-drift h-full w-full"
-            preserveAspectRatio="xMidYMid slice"
-          />
-        </Reveal>
-
         <Reveal delay={320}>
-          <dl className="relative mt-14 grid grid-cols-1 gap-x-8 gap-y-6 border-t border-white/10 pt-6 sm:grid-cols-3 lg:mt-20">
-            {readouts.map((r) => (
+          <dl className="relative mt-10 grid grid-cols-3 border-y border-white/10 bg-ink-950/65 sm:mt-12 lg:mt-16 lg:max-w-[920px]">
+            {readouts.map((readout, index) => (
               <div
-                key={r.label}
-                className="flex items-baseline justify-between gap-4 sm:flex-col sm:items-start sm:gap-1.5"
+                key={readout.label}
+                className={`min-w-0 px-3 py-4 sm:px-5 lg:px-6 ${
+                  index > 0 ? "border-l border-white/10" : ""
+                }`}
               >
-                <dt className="text-overline-s text-gray-500">{r.label}</dt>
-                <dd className="flex items-baseline gap-2">
-                  <span className="text-[22px] font-light tabular-nums text-paper">
-                    {r.value}
-                    {r.unit && (
-                      <span className="text-[14px] text-gray-500">{r.unit}</span>
+                <dt className="text-overline-s text-gray-500">
+                  {readout.label}
+                </dt>
+                <dd className="mt-3 flex flex-wrap items-baseline gap-x-1.5 gap-y-1">
+                  <span className="text-[20px] font-light tabular-nums text-paper sm:text-[22px]">
+                    {readout.value}
+                    {readout.unit && (
+                      <span className="text-[11px] text-gray-500 sm:text-[13px]">
+                        {readout.unit}
+                      </span>
                     )}
                   </span>
-                  <span className="text-caption tabular-nums text-delta-up-dark">
-                    {r.delta}
+                  <span className="text-[11px] tabular-nums text-delta-up-dark sm:text-caption">
+                    {readout.delta}
                   </span>
                 </dd>
               </div>

@@ -35,7 +35,7 @@ export default function TrustSection() {
   return (
     <section
       id="method"
-      className="relative overflow-hidden border-t border-mist bg-white py-20 lg:py-36"
+      className="relative overflow-hidden border-t border-mist bg-white py-16 lg:py-32"
     >
       <div className="container-content relative">
         <SectionHeading
@@ -45,10 +45,10 @@ export default function TrustSection() {
           intro="Structured is built like a standard, not a pitch. Four commitments govern every evaluation the framework produces."
         />
 
-        <div className="mt-12 border-y border-mist lg:mt-20">
+        <div className="mt-12 border-y border-mist lg:mt-16">
           {principles.map((p, i) => (
             <Reveal key={p.index} delay={i * 60}>
-              <div className="grid gap-4 border-b border-mist py-7 last:border-b-0 lg:grid-cols-12 lg:gap-8 lg:py-9">
+              <div className="grid gap-4 border-b border-mist py-6 last:border-b-0 lg:grid-cols-12 lg:gap-8 lg:py-8">
                 <span className="text-overline text-indigo-600 lg:col-span-1">
                   {p.index}
                 </span>
@@ -64,7 +64,7 @@ export default function TrustSection() {
         </div>
 
         <Reveal delay={120}>
-          <dl className="mt-10 grid overflow-hidden rounded-lg border border-ink-800 bg-ink-950 text-paper lg:mt-14 lg:grid-cols-4">
+          <dl className="mt-10 grid overflow-hidden rounded-lg border border-ink-800 bg-ink-950 text-paper lg:mt-12 lg:grid-cols-4">
             {stats.map((s, i) => (
               <div
                 key={s.label}

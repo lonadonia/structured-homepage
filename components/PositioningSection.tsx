@@ -8,7 +8,7 @@ function ResolutionDiagram() {
   ];
 
   return (
-    <div className="relative overflow-hidden rounded-lg border border-mist bg-white/70 p-5 shadow-[inset_0_1px_0_rgb(255_255_255_/_0.9)]">
+    <div className="relative overflow-hidden rounded-lg border border-mist bg-white/70 p-6 shadow-[inset_0_1px_0_rgb(255_255_255_/_0.9)]">
       <div
         aria-hidden="true"
         className="bg-coordinate-light absolute inset-0 opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_86%)]"
@@ -49,7 +49,7 @@ export default function PositioningSection() {
   return (
     <section
       id="why"
-      className="relative overflow-hidden border-t border-mist bg-section-sheen py-20 lg:py-36"
+      className="relative overflow-hidden border-t border-mist bg-section-sheen py-16 lg:py-32"
     >
       <div className="container-content relative">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
@@ -68,7 +68,7 @@ export default function PositioningSection() {
               </h2>
             </Reveal>
 
-            <Reveal delay={120} className="mt-10 lg:mt-14">
+            <Reveal delay={120} className="mt-10 lg:mt-12">
               <ResolutionDiagram />
             </Reveal>
           </div>

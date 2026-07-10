@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/Logo";
 import Button from "@/components/ui/Button";
 
@@ -19,6 +19,8 @@ const NAV = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -27,16 +29,47 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile panel is open; close on Escape.
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    mobileNavRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+        return;
+      }
+
+      if (e.key !== "Tab") return;
+      const focusable = mobileNavRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable?.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setOpen(false);
+    };
+
     window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
     };
   }, [open]);
 
@@ -46,8 +79,8 @@ export default function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
         solid
-          ? "border-b border-white/10 bg-ink-950/94 shadow-nav backdrop-blur-xl"
-          : "border-b border-transparent bg-[linear-gradient(180deg,rgb(7_10_16_/_0.62),transparent)]"
+          ? "border-b border-white/10 bg-ink-950 shadow-nav"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
       <a
@@ -58,10 +91,10 @@ export default function Header() {
       </a>
 
       <div className="container-content flex h-16 items-center justify-between lg:h-18">
-        <Logo tone="dark" />
+        <Logo tone="dark" preload />
 
         {/* Desktop navigation */}
-        <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
           {NAV.map((item) => (
             <a
               key={item.href}
@@ -81,6 +114,7 @@ export default function Header() {
 
         {/* Mobile menu toggle */}
         <button
+          ref={menuButtonRef}
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
@@ -111,6 +145,7 @@ export default function Header() {
       {/* Mobile panel */}
       {open && (
         <nav
+          ref={mobileNavRef}
           id="mobile-nav"
           aria-label="Primary"
           className="bg-coordinate-dark fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink-950 lg:hidden"

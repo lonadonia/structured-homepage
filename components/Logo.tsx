@@ -17,7 +17,6 @@ export function LogoGlyph({
   tone = "dark",
 }: {
   size?: number;
-  stroke?: string;
   className?: string;
   tone?: "dark" | "light";
 }) {
@@ -30,7 +29,6 @@ export function LogoGlyph({
       aria-hidden="true"
       className={`shrink-0 object-contain ${className}`}
       style={{ width: size, height: size }}
-      priority={false}
     />
   );
 }
@@ -38,9 +36,11 @@ export function LogoGlyph({
 export default function Logo({
   tone = "dark",
   className = "",
+  preload = false,
 }: {
   tone?: "dark" | "light";
   className?: string;
+  preload?: boolean;
 }) {
   return (
     <a
@@ -54,7 +54,7 @@ export default function Logo({
         height={277}
         alt="Structured"
         className="h-[42px] w-auto object-contain lg:h-[47px]"
-        priority
+        preload={preload}
       />
     </a>
   );

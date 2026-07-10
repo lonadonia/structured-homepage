@@ -24,12 +24,14 @@ const evaluations = [
 ];
 
 const scores = [58, 62, 60, 66, 71, 69, 74, 78, 76, 81, 84, 86];
+const benchmark = [64, 65, 65, 66, 67, 67, 68, 68, 69, 69, 70, 70];
 const xLabels = ["May 1", "May 8", "May 15", "May 22", "May 29", "Jun 5"];
 
 function ScoreChart() {
   const x = (i: number) => 30 + (i * 500) / (scores.length - 1);
   const y = (s: number) => 160 - s * 1.5;
   const points = scores.map((s, i) => `${x(i)},${y(s)}`).join(" ");
+  const benchPoints = benchmark.map((s, i) => `${x(i)},${y(s)}`).join(" ");
   const area = `M${x(0)},160 L${points.replace(/ /g, " L")} L${x(scores.length - 1)},160 Z`;
   const last = scores.length - 1;
 
@@ -59,6 +61,14 @@ function ScoreChart() {
       ))}
       <path d={area} fill={colors.data.chartFill} />
       <polyline
+        points={benchPoints}
+        fill="none"
+        stroke={colors.gray[400]}
+        strokeWidth="1"
+        strokeDasharray="3 3"
+        strokeLinejoin="round"
+      />
+      <polyline
         points={points}
         fill="none"
         stroke={colors.data.seriesPrimary}
@@ -76,6 +86,16 @@ function ScoreChart() {
         fill={colors.brand.ink}
       >
         86
+      </text>
+      <text
+        x={x(last) - 10}
+        y={y(benchmark[last]) + 14}
+        textAnchor="end"
+        fontSize="9"
+        fontFamily="var(--font-plex-mono), monospace"
+        fill={colors.gray[400]}
+      >
+        BENCHMARK 70
       </text>
       {xLabels.map((l, i) => (
         <text
@@ -123,7 +143,7 @@ export default function DashboardArtifact({ className = "" }: { className?: stri
     >
       <div className="hidden w-[216px] shrink-0 flex-col border-r border-white/10 bg-ink-950 text-paper md:flex">
         <div className="flex items-center gap-2 px-5 pt-5 pb-7">
-          <LogoGlyph size={18} stroke={colors.indigo[500]} />
+          <LogoGlyph size={18} />
           <span className="text-[10px] font-semibold uppercase text-paper">
             Structured
           </span>
@@ -212,7 +232,7 @@ export default function DashboardArtifact({ className = "" }: { className?: stri
                 across your content.
               </p>
               <p className="mt-auto pt-4 text-[12px] font-medium text-blue-600">
-                View insight -&gt;
+                View insight {"→"}
               </p>
             </div>
           </div>

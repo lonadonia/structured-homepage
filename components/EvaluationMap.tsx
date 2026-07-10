@@ -43,10 +43,12 @@ export default function EvaluationMap({
   className = "",
   id,
   tone = "light",
+  compact = false,
 }: {
   className?: string;
   id?: string;
   tone?: "light" | "dark";
+  compact?: boolean;
 }) {
   const dark = tone === "dark";
   const grid = dark ? colors.brand.paper : colors.brand.ink;
@@ -60,7 +62,7 @@ export default function EvaluationMap({
   return (
     <svg
       id={id}
-      viewBox={`0 0 ${W} ${H}`}
+      viewBox={compact ? "430 30 490 270" : `0 0 ${W} ${H}`}
       className={className}
       role="img"
       aria-label="Evaluation map plotting entities by structural clarity and semantic consistency. Evaluated entities cluster above the integrity threshold; one entity is highlighted with a score of 92 out of 100."
@@ -99,7 +101,7 @@ export default function EvaluationMap({
         fontSize="11"
         fill={muted}
       >
-        STRUCTURAL CLARITY -&gt;
+        STRUCTURAL CLARITY {"→"}
       </text>
       <text
         x={36}
@@ -110,7 +112,7 @@ export default function EvaluationMap({
         fontSize="11"
         fill={muted}
       >
-        SEMANTIC CONSISTENCY -&gt;
+        SEMANTIC CONSISTENCY {"→"}
       </text>
 
       <line

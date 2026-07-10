@@ -24,7 +24,7 @@ export default function EvaluationSection() {
   return (
     <section
       id="evaluation"
-      className="relative overflow-hidden border-t border-mist bg-paper py-20 lg:py-36"
+      className="relative overflow-hidden border-t border-mist bg-paper py-16 lg:py-32"
     >
       <div
         aria-hidden="true"
@@ -39,9 +39,9 @@ export default function EvaluationSection() {
         />
       </div>
 
-      <div className="container-artifact relative mt-12 lg:mt-20">
+      <div className="container-artifact relative mt-12 lg:mt-16">
         <Reveal delay={120}>
-          <div className="border-y border-gray-300 py-5 lg:py-8">
+          <div className="border-y border-gray-300 py-6">
             <div className="-mx-5 overflow-x-auto px-5 pb-2 md:mx-0 md:overflow-visible md:px-0 md:pb-0">
               <DashboardArtifact className="min-w-[640px] md:min-w-0" />
             </div>
@@ -49,13 +49,13 @@ export default function EvaluationSection() {
         </Reveal>
       </div>
 
-      <div className="container-content relative mt-12 lg:mt-16">
+      <div className="container-content relative mt-10 lg:mt-12">
         <div className="grid border-y border-gray-300 md:grid-cols-3">
           {metrics.map((m, i) => (
             <Reveal
               key={m.title}
               delay={i * 80}
-              className={`py-7 md:px-7 ${
+              className={`py-6 md:px-6 ${
                 i > 0 ? "border-t border-gray-300 md:border-t-0 md:border-l" : ""
               } ${i === 0 ? "md:pl-0" : ""} ${i === metrics.length - 1 ? "md:pr-0" : ""}`}
             >

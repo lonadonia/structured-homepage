@@ -67,14 +67,14 @@ export const typography = {
     sans: "Inter",
     mono: "IBM Plex Mono",
   },
-  /** Display + headings use a calmer editorial weight; 300 reserved for numerals. */
-  weights: { light: 300, regular: 400, medium: 500, editorial: 560, semibold: 600 },
+  /** Display + headings use 600 only. 300 reserved for display-scale numerals. */
+  weights: { light: 300, regular: 400, medium: 500, semibold: 600 },
   scale: {
-    displayXl: { desktop: 80, mobile: 42, lineHeight: 0.98, tracking: "0", weight: 560 },
-    displayL: { desktop: 68, mobile: 40, lineHeight: 1.02, tracking: "0", weight: 560 },
-    h2: { desktop: 48, mobile: 34, lineHeight: 1.08, tracking: "0", weight: 560 },
-    h3: { desktop: 30, mobile: 24, lineHeight: 1.25, tracking: "0", weight: 560 },
-    h4: { desktop: 21, mobile: 19, lineHeight: 1.35, tracking: "0", weight: 560 },
+    displayXl: { desktop: 72, mobile: 44, lineHeight: 1.05, tracking: "0", weight: 600 },
+    displayL: { desktop: 56, mobile: 38, lineHeight: 1.1, tracking: "0", weight: 600 },
+    h2: { desktop: 40, mobile: 31, lineHeight: 1.15, tracking: "0", weight: 600 },
+    h3: { desktop: 28, mobile: 24, lineHeight: 1.25, tracking: "0", weight: 600 },
+    h4: { desktop: 21, mobile: 19, lineHeight: 1.35, tracking: "0", weight: 600 },
     bodyL: { desktop: 20, mobile: 18, lineHeight: 1.6, weight: 400 },
     body: { desktop: 17, mobile: 16, lineHeight: 1.65, weight: 400 },
     bodyS: { desktop: 15, mobile: 15, lineHeight: 1.6, weight: 400 },

@@ -1,6 +1,5 @@
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
-import { TextLink } from "@/components/ui/Button";
 import { colors } from "@/lib/design-tokens";
 
 function DiagramUnderstand() {
@@ -79,12 +78,8 @@ export default function FrameworkSection() {
   return (
     <section
       id="framework"
-      className="relative overflow-hidden border-t border-mist bg-white py-20 lg:py-36"
+      className="relative overflow-hidden border-t border-mist bg-white py-16 lg:py-32"
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-48 bg-[linear-gradient(180deg,rgb(248_250_252),transparent)]"
-      />
       <div className="container-content relative">
         <SectionHeading
           index="02"
@@ -93,27 +88,27 @@ export default function FrameworkSection() {
           intro="Structured moves from comprehension to measurement to practice - a single method for treating structure as a property of information."
         />
 
-        <div className="mt-14 border-y border-mist lg:mt-20">
+        <div className="mt-12 border-y border-mist lg:mt-16">
           <div className="grid lg:grid-cols-3">
             {pillars.map((p, i) => (
               <Reveal
                 key={p.index}
                 delay={i * 80}
-                className={`relative min-h-[360px] py-8 lg:py-10 ${
+                className={`relative py-8 lg:py-10 ${
                   i > 0 ? "border-t border-mist lg:border-t-0 lg:border-l" : ""
                 }`}
               >
                 <div
-                  className={`flex h-full flex-col px-0 lg:px-8 ${
-                    i === 0 ? "lg:pl-0" : ""
-                  } ${i === pillars.length - 1 ? "lg:pr-0" : ""}`}
+                  className={`px-0 lg:px-8 ${i === 0 ? "lg:pl-0" : ""} ${
+                    i === pillars.length - 1 ? "lg:pr-0" : ""
+                  }`}
                 >
                   <div className="flex items-start justify-between gap-8">
                     <div>
                       <span className="text-overline text-indigo-600">
                         {p.index}
                       </span>
-                      <h3 className="text-h3 mt-7 max-w-[12ch] text-ink-900">
+                      <h3 className="text-h3 mt-6 max-w-[12ch] text-ink-900">
                         {p.title}
                       </h3>
                     </div>
@@ -122,9 +117,6 @@ export default function FrameworkSection() {
                   <p className="text-body mt-8 max-w-[44ch] text-gray-600">
                     {p.body}
                   </p>
-                  <div className="mt-auto pt-8">
-                    <TextLink href="#evaluation">Learn more</TextLink>
-                  </div>
                 </div>
               </Reveal>
             ))}
