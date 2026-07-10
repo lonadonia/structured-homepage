@@ -50,8 +50,8 @@ export default function Logo({
     >
       <Image
         src={logoAssets[tone].logo}
-        width={tone === "dark" ? 184 : 172}
-        height={50}
+        width={1234}
+        height={277}
         alt="Structured"
         className="h-8 w-auto object-contain lg:h-9"
         priority
